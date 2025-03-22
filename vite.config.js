@@ -6,7 +6,7 @@ export default defineConfig(() => {
   dotEnv.config();
   return {
     plugins: [react()],
-    base: './',
+    base: '/',
     build: {
       sourcemap: true,
       rollupOptions: {
