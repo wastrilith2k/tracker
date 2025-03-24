@@ -66,3 +66,12 @@ export const BackButton = styled.button`
   color: white;
   border: none;
 `;
+
+
+export const StyledLogoutButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  border: none;
+`;

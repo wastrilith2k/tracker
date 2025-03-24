@@ -7,8 +7,9 @@ import {
   PageContainer,
   PageHeader,
 } from './styles';
+import { LogoutButton } from './LogoutButton';
 
-const MainPage: React.FC = () => {
+export const MainPage: React.FC = () => {
   const [names, setNames] = useState<string[]>([]);
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const MainPage: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader>Who?</PageHeader>
+      <LogoutButton/>
       <PageButtonContainer>
         {names.map((name, idx) => {
           const colorIndex = idx % 4;

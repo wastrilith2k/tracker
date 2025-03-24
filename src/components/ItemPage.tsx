@@ -9,6 +9,7 @@ import {
   PageHeader,
 } from './styles';
 import { Icon } from './Icon';
+import { LogoutButton } from './LogoutButton';
 
 const ItemPage = () => {
   const { name } = useParams() as { name: string };
@@ -35,6 +36,7 @@ const ItemPage = () => {
       <BackButton onClick={() => navigate('/')}>
         <Icon name="chevron_left" size={48} />
       </BackButton>
+      <LogoutButton/>
       <PageHeader>What?</PageHeader>
       <PageButtonContainer>
         {!isSent ? (
