@@ -10,6 +10,8 @@ import {
 } from './styles';
 import { Icon } from './Icon';
 import { LogoutButton } from './LogoutButton';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../config/firebaseConfig';
 
 const ItemPage = () => {
   const { name } = useParams() as { name: string };
@@ -22,10 +24,11 @@ const ItemPage = () => {
     const fetchedItems = fetchItems(name);
     setItems(fetchedItems);
   }, []);
+  const [user] = useAuthState(auth);
 
   const handleItemClick = (item: string) => {
     console.log(`Item clicked: ${item}, Name: ${name}`);
-    sendEvent(name, item);
+    sendEvent(name, item, (user?.email ?? 'unknown') as string);
     setMessage(`${name} ${item}`);
     setIsSent(true);
     setTimeout(() => navigate('/'), 2000);
@@ -36,7 +39,7 @@ const ItemPage = () => {
       <BackButton onClick={() => navigate('/')}>
         <Icon name="chevron_left" size={48} />
       </BackButton>
-      <LogoutButton/>
+      <LogoutButton />
       <PageHeader>What?</PageHeader>
       <PageButtonContainer>
         {!isSent ? (
