@@ -12,6 +12,7 @@ import { Icon } from './Icon';
 import { LogoutButton } from './LogoutButton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
+import { Modal } from './Modal';
 
 const ItemPage = () => {
   const { name } = useParams() as { name: string };
@@ -19,6 +20,8 @@ const ItemPage = () => {
   const [items, setItems] = useState<string[]>([]);
   const [isSent, setIsSent] = useState(false);
   const [message, setMessage] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [item, setItem] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchedItems = fetchItems(name);
@@ -27,12 +30,17 @@ const ItemPage = () => {
   const [user] = useAuthState(auth);
 
   const handleItemClick = (item: string) => {
-    console.log(`Item clicked: ${item}, Name: ${name}`);
-    sendEvent(name, item, (user?.email ?? 'unknown') as string);
+    setItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = (comment: string | null) => {
+    setIsModalOpen(false);
+    sendEvent(name, item as string, (user?.email ?? 'unknown') as string, comment);
     setMessage(`${name} ${item}`);
     setIsSent(true);
     setTimeout(() => navigate('/'), 2000);
-  };
+  }
 
   return (
     <PageContainer>
@@ -61,6 +69,7 @@ const ItemPage = () => {
           <h1>{`Logging: ${message}`}</h1>
         )}
       </PageButtonContainer>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmit} />
     </PageContainer>
   );
 };
