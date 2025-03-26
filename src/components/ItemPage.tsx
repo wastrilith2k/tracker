@@ -25,7 +25,6 @@ const ItemPage = () => {
     setItems(fetchedItems);
   }, []);
   const [user] = useAuthState(auth);
-  console.log('user', user);
 
   const handleItemClick = (item: string) => {
     console.log(`Item clicked: ${item}, Name: ${name}`);
