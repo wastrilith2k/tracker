@@ -35,7 +35,7 @@ export const PageButtonContainer = styled.div`
   flex: 1 1 auto;
 `;
 
-export const Button = styled.button<{ $colorIndex: number }>`
+export const Button = styled.button<{ $colorIndex: number; $baseWidth?: string }>`
   background-color: ${({ $colorIndex }) => colorPalette[$colorIndex]};
   border: 2px solid ${({ $colorIndex }) => borderPalette[$colorIndex]};
   color: white;
@@ -47,7 +47,7 @@ export const Button = styled.button<{ $colorIndex: number }>`
   justify-content: center;
   font-size: 2rem;
   flex: 1 1 auto;
-  width: calc(100vh - 20px);
+  width: calc(${({ $baseWidth }) => $baseWidth ? $baseWidth : '100vh'} - 20px);
   margin: 0.5rem;
   min-height: 60px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
@@ -77,4 +77,35 @@ export const StyledLogoutButton = styled.button`
   right: 1rem;
   color: white;
   border: none;
+`;
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.75);
+`;
+
+export const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 400px;
+  text-align: center;
+
+  & textArea {
+  width: calc(100% - 20px);
+  height: 100px;}
+`;
+
+export const ModalActions = styled.div`
+  button {
+    margin: 5px;
+  }
 `;

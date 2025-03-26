@@ -18,10 +18,10 @@ export const fetchItems = (name: string): string[] => {
   return (config.get(name) || []) as string[];
 };
 
-export const sendEvent = (name: string, event: string, user: string) => {
+export const sendEvent = (name: string, event: string, user: string, comment:string|null) => {
   Statsig.logEvent({
     eventName: `${name} ${event}`,
-    metadata: { name, event, user },
+    metadata: { name, event, user, comment },
   } as unknown as StatsigEvent);
   Statsig.flush();
 };
