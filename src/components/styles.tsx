@@ -1,10 +1,10 @@
 import { styled } from 'styled-components';
 
 const colorPalette = [
-  'rgba(51,122,183,.8)',
-  'rgba(92,184,92,.8)',
-  'rgba(240,173,78,.8)',
-  'rgba(217,83,79,.8)',
+  'rgba(51,122,183,.7)',
+  'rgba(92,184,92,.7)',
+  'rgba(240,173,78,.7)',
+  'rgba(217,83,79,.7)',
 ];
 const borderPalette = [
   'rgba(51,122,183,1)',
@@ -18,12 +18,13 @@ export const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 export const PageHeader = styled.h1`
   font-size: 2rem;
   margin-bottom: 1rem;
+  height: 48px;
 `;
 
 export const PageButtonContainer = styled.div`
@@ -36,7 +37,7 @@ export const PageButtonContainer = styled.div`
 
 export const Button = styled.button<{ $colorIndex: number }>`
   background-color: ${({ $colorIndex }) => colorPalette[$colorIndex]};
-  border: 1px solid ${({ $colorIndex }) => borderPalette[$colorIndex]};
+  border: 2px solid ${({ $colorIndex }) => borderPalette[$colorIndex]};
   color: white;
   border-radius: 20px;
   cursor: pointer;
@@ -46,8 +47,10 @@ export const Button = styled.button<{ $colorIndex: number }>`
   justify-content: center;
   font-size: 2rem;
   flex: 1 1 auto;
-  width: 100vh;
+  width: calc(100vh - 20px);
   margin: 0.5rem;
+  min-height: 60px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 
   &:hover {
     background-color: ${({ $colorIndex }) => borderPalette[$colorIndex]};
