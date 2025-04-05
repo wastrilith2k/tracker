@@ -13,6 +13,7 @@ import { LogoutButton } from './LogoutButton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
 import { Modal } from './Modal';
+import { sendToAws } from '../config/awsConfig';
 
 const ItemPage = () => {
   const { name } = useParams() as { name: string };
@@ -38,6 +39,19 @@ const ItemPage = () => {
     setIsModalOpen(false);
     sendEvent(name, item as string, (user?.email ?? 'unknown') as string, comment);
     setMessage(`${name} ${item}`);
+
+    // Send to AWS
+    sendToAws(
+      name,
+      item as string,
+      (user?.email ?? 'unknown') as string,
+      comment,
+    ).then((response) => {
+      console.log('Response from AWS:', response);
+    }).catch((error) => {
+      console.error('Error sending to AWS:', error);
+    });
+
     setIsSent(true);
     setTimeout(() => navigate('/'), 2000);
   }
