@@ -30,10 +30,7 @@ export const sendToAws = async (
 ) => {
   const hour = new Date().getHours();
   const date = new Date().toISOString().split('T')[0];
-  const payload = {
-    eventName: `${name} ${event}`,
-    metadata: { name, event, user, comment, hour, date },
-  };
+  const payload = { name, event, user, comment, hour, date };
   console.log('Payload to be sent to API gateway', payload);
   return sendPayload(payload);
 };
