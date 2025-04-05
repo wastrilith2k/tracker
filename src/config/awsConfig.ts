@@ -1,5 +1,5 @@
 const invokeUrl =
-  'https://2ribv7ubh0.execute-api.us-east-1.amazonaws.com/Production';
+  'https://2ribv7ubh0.execute-api.us-east-1.amazonaws.com/Production/items';
 
 // Create a new payload for being sent to the API gateway
 // Add everything from Statsig and include the hour as well
