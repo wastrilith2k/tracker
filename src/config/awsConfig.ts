@@ -8,7 +8,7 @@ const invokeUrl =
 // create a method that will send the same payload in statsigCOnfig.ts to the API gateway's invokeUrl
 export const sendPayload = async (payload: any) => {
   const response = await fetch(invokeUrl, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
