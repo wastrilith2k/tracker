@@ -29,7 +29,9 @@ export const sendToAws = async (
   comment: string | null,
 ) => {
   const hour = new Date().getHours();
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date(new Date().toLocaleDateString())
+    .toISOString()
+    .split('T')[0];
   const payload = { name, event, user, comment, hour, date };
   console.log('Payload to be sent to API gateway', payload);
   return sendPayload(payload);
