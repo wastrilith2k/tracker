@@ -15,7 +15,7 @@ export const MainPage: React.FC = () => {
 
   useEffect(() => {
     const fetchedNames = fetchNames();
-    console.log('Fetched names:', fetchedNames);
+    console.debug('Fetched names:', fetchedNames);
     setNames(fetchedNames);
   }, []);
 
@@ -26,7 +26,7 @@ export const MainPage: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader>Who?</PageHeader>
-      <LogoutButton/>
+      <LogoutButton />
       <PageButtonContainer>
         {names.map((name, idx) => {
           const colorIndex = idx % 4;
