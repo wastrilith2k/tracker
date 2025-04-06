@@ -44,10 +44,10 @@ const ItemPage = () => {
     sendToAws(
       name,
       item as string,
-      (user?.email ?? 'unknown') as string,
+      (user?.uid ?? 'unknown') as string,
       comment,
     ).then((response) => {
-      console.log('Response from AWS:', response);
+      console.debug('Response from AWS:', response);
     }).catch((error) => {
       console.error('Error sending to AWS:', error);
     });

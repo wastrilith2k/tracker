@@ -1,10 +1,6 @@
 const invokeUrl =
   'https://2ribv7ubh0.execute-api.us-east-1.amazonaws.com/Production/items';
 
-// Create a new payload for being sent to the API gateway
-// Add everything from Statsig and include the hour as well
-// Change from using the email on the user to using the userId
-
 // create a method that will send the same payload in statsigCOnfig.ts to the API gateway's invokeUrl
 export const sendPayload = async (payload: any) => {
   const response = await fetch(invokeUrl, {
@@ -17,9 +13,8 @@ export const sendPayload = async (payload: any) => {
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   } else {
-    console.log('Payload sent to API gateway', response.json());
+    console.debug('Payload sent to API gateway');
   }
-  return response.json();
 };
 
 export const sendToAws = async (
@@ -33,6 +28,6 @@ export const sendToAws = async (
     .toISOString()
     .split('T')[0];
   const payload = { name, event, user, comment, hour, date };
-  console.log('Payload to be sent to API gateway', payload);
+  console.debug('Payload to be sent to API gateway', payload);
   return sendPayload(payload);
 };
