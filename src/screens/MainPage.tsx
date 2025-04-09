@@ -6,8 +6,8 @@ import {
   PageButtonContainer,
   PageContainer,
   PageHeader,
-} from './styles';
-import { LogoutButton } from './LogoutButton';
+} from '../components/styles';
+import { LogoutButton } from '../components/LogoutButton';
 
 export const MainPage: React.FC = () => {
   const [names, setNames] = useState<string[]>([]);

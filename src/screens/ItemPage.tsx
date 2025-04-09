@@ -7,13 +7,14 @@ import {
   PageButtonContainer,
   PageContainer,
   PageHeader,
-} from './styles';
-import { Icon } from './Icon';
-import { LogoutButton } from './LogoutButton';
+} from '../components/styles';
+import { Icon } from '../components/Icon';
+import { LogoutButton } from '../components/LogoutButton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
-import { Modal } from './Modal';
+import { Modal } from '../components/Modal';
 import { sendToAws } from '../config/awsConfig';
+import { MetricsNavButton } from '../components/MetricsNavButton';
 
 const ItemPage = () => {
   const { name } = useParams() as { name: string };
@@ -61,7 +62,7 @@ const ItemPage = () => {
       <BackButton onClick={() => navigate('/')}>
         <Icon name="chevron_left" size={48} />
       </BackButton>
-      <LogoutButton />
+      <MetricsNavButton />
       <PageHeader>What?</PageHeader>
       <PageButtonContainer>
         {!isSent ? (

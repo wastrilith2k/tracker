@@ -71,7 +71,7 @@ export const BackButton = styled.button`
 `;
 
 
-export const StyledLogoutButton = styled.button`
+export const StyledRightButton = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -109,3 +109,68 @@ export const ModalActions = styled.div`
     margin: 5px;
   }
 `;
+
+export const ChartWrapper = styled.div`
+  width: 100%;
+  height: 400px;
+  // margin: 0 auto;
+  // box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.75);
+  // border-radius: 20px;
+  // overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  // padding: 20px;
+  // background-color: rgba(255, 255, 255, 0.9);
+  // backdrop-filter: blur(10px);
+  // border: 1px solid rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  // transition: all 0.3s ease;
+
+  // &:hover {
+  //   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  // }
+`;
+
+export const MetricsDateRangeBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  margin: 1rem;
+  width: fit-content;
+  height: 50px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+export const MetricsDateRangeButton = styled.button<{ $active: boolean }>`
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  width:134px;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid ${({ $active }) => $active ? `rgba(130, 130, 130, 0.5);` : `transparent`};
+`;
+export const MetricsEventTableWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  margin: 1rem;
+  width: fit-content;
+  transition: all 0.3s ease;
+`

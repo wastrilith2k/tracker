@@ -1,9 +1,9 @@
 const invokeUrl =
-  'https://2ribv7ubh0.execute-api.us-east-1.amazonaws.com/Production/items';
+  'https://2ribv7ubh0.execute-api.us-east-1.amazonaws.com/Production/';
 
 // create a method that will send the same payload in statsigCOnfig.ts to the API gateway's invokeUrl
 export const sendPayload = async (payload: any) => {
-  const response = await fetch(invokeUrl, {
+  const response = await fetch(`${invokeUrl}items`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -30,4 +30,20 @@ export const sendToAws = async (
   const payload = { name, event, user, comment, hour, date };
   console.debug('Payload to be sent to API gateway', payload);
   return sendPayload(payload);
+};
+
+export const fetchMetrics = async (name: string, user: string) => {
+  const response = await fetch(`${invokeUrl}metrics/${name}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Event-User': user,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  } else {
+    console.debug('Metrics fetched from API gateway');
+  }
+  return response.json();
 };

@@ -1,6 +1,6 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { StyledLogoutButton } from "./styles";
+import { StyledRightButton } from "./styles";
 import { Icon } from "./Icon";
 
 export const LogoutButton = () => {
@@ -21,6 +21,6 @@ export const LogoutButton = () => {
   }
 
   return (
-    <StyledLogoutButton onClick={handleLogout}><Icon name="move_item" size={48} /></StyledLogoutButton>
+    <StyledRightButton onClick={handleLogout}><Icon name="move_item" size={48} /></StyledRightButton>
   );
 }
