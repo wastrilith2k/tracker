@@ -111,27 +111,13 @@ export const ModalActions = styled.div`
 `;
 
 export const ChartWrapper = styled.div`
-  width: 100%;
+  width: calc(100% - 2rem);
   height: 400px;
-  // margin: 0 auto;
-  // box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.75);
-  // border-radius: 20px;
-  // overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  // padding: 20px;
-  // background-color: rgba(255, 255, 255, 0.9);
-  // backdrop-filter: blur(10px);
-  // border: 1px solid rgba(0, 0, 0, 0.1);
-  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  // transition: all 0.3s ease;
-
-  // &:hover {
-  //   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-  // }
 `;
 
 export const MetricsDateRangeBar = styled.div`
@@ -148,6 +134,7 @@ export const MetricsDateRangeBar = styled.div`
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-self: flex-start;
 `;
 
 export const MetricsDateRangeButton = styled.button<{ $active: boolean }>`
@@ -164,13 +151,48 @@ export const MetricsDateRangeButton = styled.button<{ $active: boolean }>`
   border-radius: 8px;
   border: 2px solid ${({ $active }) => $active ? `rgba(130, 130, 130, 0.5);` : `transparent`};
 `;
-export const MetricsEventTableWrapper = styled.div`
+export const MetricsEventTableContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1 1 auto;
+  width: calc(100% - 2rem);
   margin: 1rem;
-  width: fit-content;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`
+
+export const MetricsEventTableHeader = styled.h2`
+  font-size: 1.5rem;
+  height: 48px;
+  text-align: left;
+  padding-left: 2rem;
+  display:flex;
+  align-items: center;
+  width: calc(100% - 2rem);
+  background-color: rgba(225, 225, 225, 0.9);
+  border: 1px solid rgba(130, 130, 130, 0.5);
+  margin:2px 1rem;
+`
+export const MetricsEventTable = styled.table`
+  border-collapse: collapse;
+  width: calc(100% - 2rem);
+  margin: 1rem;
   transition: all 0.3s ease;
+  & tr {
+    border-bottom: 1px solid #ddd;
+  }
+  & th, & td {
+    text-align: left;
+    padding: 8px;
+  }
+  & th {
+    background-color: #f2f2f2;
+  }
+  & tr:hover {
+    background-color: #f5f5f5;
+  }
 `

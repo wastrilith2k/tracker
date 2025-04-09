@@ -63,7 +63,7 @@ const ItemPage = () => {
         <Icon name="chevron_left" size={48} />
       </BackButton>
       <MetricsNavButton />
-      <PageHeader>What?</PageHeader>
+      <PageHeader>{`${name} What?`}</PageHeader>
       <PageButtonContainer>
         {!isSent ? (
           <Fragment>

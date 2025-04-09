@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, Fragment } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchItems } from "../config/statsigConfig";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
 import { fetchMetrics } from "../config/awsConfig";
 import { ResponsiveLine } from "@nivo/line";
-import { ChartWrapper, MetricsEventTableWrapper } from "../components/styles";
+import { BackButton, ChartWrapper, MetricsEventTable, MetricsEventTableContainer, MetricsEventTableHeader, PageContainer, PageHeader, StyledRightButton } from "../components/styles";
 import { MetricsRange } from "../components/MetricsRange";
 import moment from "moment";
 import { ToolTip } from "../components/ToolTip";
+import { Icon } from "../components/Icon";
 
 type Point = {
   x: string;
@@ -29,6 +30,7 @@ type Metric = {
 }
 
 export const MetricsPage = () => {
+  const navigate = useNavigate();
   const { name, metric } = useParams() as { name: string, metric?: string };
 
   const [selectedMetric, setSelectedMetric] = useState<string>();
@@ -47,7 +49,7 @@ export const MetricsPage = () => {
   }, []);
 
   useEffect(() => {
-    const metrics = fetchMetrics(name, user?.uid as string).then((response) => {
+    fetchMetrics(name, user?.uid as string).then((response) => {
       // Convert response to dataSource format
       let minDate = moment().subtract(days, 'days').format('YYYY-MM-DD');
       let maxDate = moment().format('YYYY-MM-DD');
@@ -86,17 +88,29 @@ export const MetricsPage = () => {
       }
 
       setDataSource(datasource);
-      setMetrics(response.sort((a: Metric, b: Metric) => {
-        const aVal = moment(`${a.date} ${a.hour}`, 'YYYY-MM-DD h');
-        const bVal = moment(`${b.date} ${b.hour}`, 'YYYY-MM-DD h');
-        return aVal > bVal
-      }) as Metric[]);
+
+      const reponseMetrics = response.filter((metric: Metric) => {
+        return !moment(metric.date, 'YYYY-MM-DD').isBefore(minDate);
+      });
+      reponseMetrics.sort((a: Metric, b: Metric) => {
+        const aVal = moment(`${a.date} ${a.hour}`, 'YYYY-MM-DD H').unix();
+        const bVal = moment(`${b.date} ${b.hour}`, 'YYYY-MM-DD H').unix();
+        return aVal - bVal
+      }) as Metric[]
+
+      setMetrics(reponseMetrics);
     })
   }, [name, items.length, days, user?.uid]);
 
   return (
-    <div>
-      <h1>{name} Metrics</h1>
+    <PageContainer>
+      <BackButton onClick={() => navigate(`/items/${name}`)}>
+        <Icon name="chevron_left" size={48} />
+      </BackButton>
+      <StyledRightButton onClick={() => navigate('/')}>
+        <Icon name="home" size={48} />
+      </StyledRightButton>
+      <PageHeader>{name} Metrics</PageHeader>
       <MetricsRange dateRangeSetter={setDays} days={days} />
 
       <ChartWrapper>
@@ -173,28 +187,41 @@ export const MetricsPage = () => {
           ]}
         />
       </ChartWrapper>
-      {items.map((item) => {
-        return (
-          <div key={item}>
-            <h2 onClick={() => setSelectedMetric(item)}>{item}</h2>
-            {selectedMetric === item ? (<MetricsEventTableWrapper>
-              <table>
-                {metrics.filter((metric) => metric.event === item).map((metric) => {
-                  return (
-                    <tr key={metric.id}>
-                      <td>{metric.name}</td>
-                      <td>{metric.date}</td>
-                      <td>{metric.hour}</td>
-                      <td>{metric.event}</td>
-                      <td>{metric.comment}</td>
+      <MetricsEventTableContainer>
+        {items.sort().map((item) => {
+          const itemMetrics = metrics.filter((metric) => metric.event === item)
+          return (
+            <Fragment key={item}>
+              <MetricsEventTableHeader onClick={() => selectedMetric !== item ? setSelectedMetric(item) : setSelectedMetric('')}>{`${item} (${itemMetrics.length})`}</MetricsEventTableHeader>
+              {selectedMetric === item ? (
+                <MetricsEventTable>
+                  <thead>
+                    <tr>
+                      <th>Event</th>
+                      <th>Date</th>
+                      <th>Event</th>
+                      <th>Comment</th>
                     </tr>
-                  )
-                })}
-              </table>
-            </MetricsEventTableWrapper>) : null}
-          </div>
-        )
-      })}
-    </div>
+                  </thead>
+                  <tbody>
+
+                    {itemMetrics.map((metric) => {
+                      return (
+                        <tr key={metric.id}>
+                          <td>{metric.name}</td>
+                          <td>{moment(`${metric.date} ${metric.hour}`, 'YYYY-MM-DD h').format('MMM D ha')}</td>
+                          <td>{metric.event}</td>
+                          <td>{metric.comment}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </MetricsEventTable>
+              ) : null}
+            </Fragment>
+          )
+        })}
+      </MetricsEventTableContainer>
+    </PageContainer>
   )
 }
