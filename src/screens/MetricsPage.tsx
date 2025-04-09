@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchItems } from "../config/statsigConfig";
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -40,7 +40,7 @@ export const MetricsPage = () => {
   const [items, setItems] = useState<string[]>([]);
   const [days, setDays] = useState<number>(7);
   const [metrics, setMetrics] = useState<Metric[]>([]);
-  const [dataSource, setDataSource] = useState<DataSourceRecord[]>([]);
+  const dataSource = useRef([] as DataSourceRecord[]);
 
   // Load in items - eventually this should go in a store
   useEffect(() => {
@@ -87,7 +87,7 @@ export const MetricsPage = () => {
         }
       }
 
-      setDataSource(datasource);
+      dataSource.current = datasource;
 
       const reponseMetrics = response.filter((metric: Metric) => {
         return !moment(metric.date, 'YYYY-MM-DD').isBefore(minDate);
@@ -112,81 +112,81 @@ export const MetricsPage = () => {
       </StyledRightButton>
       <PageHeader>{name} Metrics</PageHeader>
       <MetricsRange dateRangeSetter={setDays} days={days} />
+      {dataSource.current.length > 0 ? (
+        <ChartWrapper>
+          <ResponsiveLine
+            colors={{ scheme: 'set3' }}
+            data={dataSource.current}
+            margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+            xScale={{ type: 'point' }}
+            yScale={{
+              type: 'linear',
+              min: 'auto',
+              max: 'auto',
+              stacked: false,
+              reverse: false
+            }}
+            axisTop={null}
+            axisRight={null}
+            axisBottom={{
+              tickRotation: -45,
+              legend: 'Date',
+              legendOffset: 40,
+              legendPosition: 'middle',
+              truncateTickAt: 0,
+              format: (value) => {
+                const date = moment(value, 'YYYY-MM-DD');
+                return date.format('MMM D');
+              }
 
-      <ChartWrapper>
-        <ResponsiveLine
-          colors={{ scheme: 'set3' }}
-          data={dataSource}
-          margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-          xScale={{ type: 'point' }}
-          yScale={{
-            type: 'linear',
-            min: 'auto',
-            max: 'auto',
-            stacked: false,
-            reverse: false
-          }}
-          axisTop={null}
-          axisRight={null}
-          axisBottom={{
-            tickRotation: -45,
-            legend: 'Date',
-            legendOffset: 40,
-            legendPosition: 'middle',
-            truncateTickAt: 0,
-            format: (value) => {
-              const date = moment(value, 'YYYY-MM-DD');
-              return date.format('MMM D');
-            }
-
-          }}
-          axisLeft={{
-            tickRotation: 0,
-            legend: 'Count',
-            legendOffset: -40,
-            legendPosition: 'middle',
-            truncateTickAt: 0
-          }}
-          pointSize={10}
-          pointColor={{ theme: 'background' }}
-          pointBorderWidth={2}
-          pointBorderColor={{ from: 'serieColor' }}
-          pointLabel="data.yFormatted"
-          pointLabelYOffset={-12}
-          enableTouchCrosshair={true}
-          useMesh={true}
-          tooltip={ToolTip}
-          legends={[
-            {
-              anchor: 'bottom-right',
-              direction: 'column',
-              justify: false,
-              translateX: 100,
-              translateY: 0,
-              itemsSpacing: 0,
-              itemDirection: 'left-to-right',
-              itemWidth: 80,
-              itemHeight: 20,
-              itemOpacity: 0.75,
-              onClick: (e) => {
-                console.log('Clicked legend:', e);
-              },
-              symbolSize: 12,
-              symbolShape: 'circle',
-              symbolBorderColor: 'rgba(0, 0, 0, .5)',
-              effects: [
-                {
-                  on: 'hover',
-                  style: {
-                    itemBackground: 'rgba(0, 0, 0, .03)',
-                    itemOpacity: 1
+            }}
+            axisLeft={{
+              tickRotation: 0,
+              legend: 'Count',
+              legendOffset: -40,
+              legendPosition: 'middle',
+              truncateTickAt: 0
+            }}
+            pointSize={10}
+            pointColor={{ theme: 'background' }}
+            pointBorderWidth={2}
+            pointBorderColor={{ from: 'serieColor' }}
+            pointLabel="data.yFormatted"
+            pointLabelYOffset={-12}
+            enableTouchCrosshair={true}
+            useMesh={true}
+            tooltip={ToolTip}
+            legends={[
+              {
+                anchor: 'bottom-right',
+                direction: 'column',
+                justify: false,
+                translateX: 100,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: 'left-to-right',
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                onClick: (e) => {
+                  console.log('Clicked legend:', e);
+                },
+                symbolSize: 12,
+                symbolShape: 'circle',
+                symbolBorderColor: 'rgba(0, 0, 0, .5)',
+                effects: [
+                  {
+                    on: 'hover',
+                    style: {
+                      itemBackground: 'rgba(0, 0, 0, .03)',
+                      itemOpacity: 1
+                    }
                   }
-                }
-              ]
-            }
-          ]}
-        />
-      </ChartWrapper>
+                ]
+              }
+            ]}
+          />
+        </ChartWrapper>) : null}
       <MetricsEventTableContainer>
         {items.sort().map((item) => {
           const itemMetrics = metrics.filter((metric) => metric.event === item)
