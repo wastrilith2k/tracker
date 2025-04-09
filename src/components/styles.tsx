@@ -144,7 +144,7 @@ export const MetricsDateRangeButton = styled.button<{ $active: boolean }>`
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  width:134px;
+  width:fit-content;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
