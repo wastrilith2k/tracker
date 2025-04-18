@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { StyledRightButton } from "./styles";
+import { StyledRightTopButton } from "./styles";
 import { Icon } from "./Icon";
 
 export const MetricsNavButton = () => {
@@ -11,6 +11,6 @@ export const MetricsNavButton = () => {
   }
 
   return (
-    <StyledRightButton onClick={handleClick}><Icon name="show_chart" size={48} /></StyledRightButton>
+    <StyledRightTopButton onClick={handleClick}><Icon name="show_chart" size={48} /></StyledRightTopButton>
   );
 }
