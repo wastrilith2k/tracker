@@ -19,6 +19,8 @@ export const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  padding-bottom: 34px;
+  position: relative;
 `;
 
 export const PageHeader = styled.h1`
@@ -33,6 +35,20 @@ export const PageButtonContainer = styled.div`
   align-items: stretch;
   justify-content: center;
   flex: 1 1 auto;
+
+  & ul {
+    padding: 0px;
+padding-inline-start: 0px;
+    & li {
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+      align-items: center;
+      & button {
+        width: 80vw;
+      }
+    }
+  }
 `;
 
 export const Button = styled.button<{ $colorIndex: number; $baseWidth?: string }>`
@@ -45,10 +61,12 @@ export const Button = styled.button<{ $colorIndex: number; $baseWidth?: string }
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self:center;
   font-size: 2rem;
   flex: 1 1 auto;
-  width: calc(${({ $baseWidth }) => $baseWidth ? $baseWidth : '100vh'} - 20px);
+  width: ${({ $baseWidth }) => $baseWidth ? $baseWidth : '96vw'};
   margin: 0.5rem;
+  padding:0px;
   min-height: 60px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 
@@ -57,25 +75,46 @@ export const Button = styled.button<{ $colorIndex: number; $baseWidth?: string }
   }
 `;
 
-export const StyledIcon = styled.div<{ color: string; size: number }>`
+export const StyledIcon = styled.div<{ color: string; size: number; $fill?: boolean }>`
   color: ${({ color }) => color};
   font-size: ${({ size }) => `${size}px`} !important;
+  ${({ $fill }) => $fill ? `
+  font-variation-settings:
+'FILL' 1,
+  'wght' 400,
+    'GRAD' 0,
+      'opsz' 24
+        ` : ``}
+
 `;
 
-export const BackButton = styled.button`
+export const StyledLeftTopButton = styled.button`
   position: absolute;
   top: 1rem;
   left: 1rem;
-  color: white;
   border: none;
 `;
 
 
-export const StyledRightButton = styled.button`
+export const StyledRightTopButton = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  color: white;
+  border: none;
+`;
+
+export const StyledLeftBottomButton = styled.button`
+  position: absolute;
+  bottom: 0px;
+  left: 1rem;
+  border: none;
+`;
+
+
+export const StyledRightBottomButton = styled.button`
+  position: absolute;
+  bottom: 0px;
+  right: 1rem;
   border: none;
 `;
 
@@ -128,7 +167,8 @@ export const MetricsDateRangeBar = styled.div`
   flex: 1 1 auto;
   margin: 1rem;
   width: fit-content;
-  height: 50px;
+  min-height: 50px;
+  height:fit-content;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
@@ -196,3 +236,10 @@ export const MetricsEventTable = styled.table`
     background-color: #f5f5f5;
   }
 `
+export const ConfigLink = styled.a`
+  color: rgba(51,122,183,.7);
+  text-decoration: none;
+  font-size: 1.5rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  `;

@@ -2,18 +2,18 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchItems, sendEvent } from '../config/statsigConfig';
 import {
-  BackButton,
+  StyledLeftTopButton,
   Button,
+  ModalActions,
   PageButtonContainer,
   PageContainer,
   PageHeader,
 } from '../components/styles';
 import { Icon } from '../components/Icon';
-import { LogoutButton } from '../components/LogoutButton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
 import { Modal } from '../components/Modal';
-import { sendToAws } from '../config/awsConfig';
+import { sendEventToAWS } from '../config/awsConfig';
 import { MetricsNavButton } from '../components/MetricsNavButton';
 
 const ItemPage = () => {
@@ -24,6 +24,7 @@ const ItemPage = () => {
   const [message, setMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<string | null>(null);
+  const [text, setText] = useState<string>('');
 
   useEffect(() => {
     const fetchedItems = fetchItems(name);
@@ -36,17 +37,17 @@ const ItemPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = (comment: string | null) => {
+  const handleSubmit = () => {
     setIsModalOpen(false);
-    sendEvent(name, item as string, (user?.email ?? 'unknown') as string, comment);
+    sendEvent(name, item as string, (user?.email ?? 'unknown') as string, text);
     setMessage(`${name} ${item}`);
 
     // Send to AWS
-    sendToAws(
+    sendEventToAWS(
       name,
       item as string,
       (user?.uid ?? 'unknown') as string,
-      comment,
+      text,
     ).then((response) => {
       console.debug('Response from AWS:', response);
     }).catch((error) => {
@@ -59,11 +60,11 @@ const ItemPage = () => {
 
   return (
     <PageContainer>
-      <BackButton onClick={() => navigate('/')}>
+      <StyledLeftTopButton onClick={() => navigate('/')}>
         <Icon name="chevron_left" size={48} />
-      </BackButton>
+      </StyledLeftTopButton>
       <MetricsNavButton />
-      <PageHeader>{`${name} What?`}</PageHeader>
+      <PageHeader>{`${name} - What?`}</PageHeader>
       <PageButtonContainer>
         {!isSent ? (
           <Fragment>
@@ -84,7 +85,19 @@ const ItemPage = () => {
           <h1>{`Logging: ${message}`}</h1>
         )}
       </PageButtonContainer>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmit} />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h3>Comment?</h3>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder='Enter your comment here...'
+        />
+        <ModalActions>
+          <Button $baseWidth='100%' $colorIndex={1} onClick={() => handleSubmit()}>Submit</Button>
+          <Button $baseWidth='100%' $colorIndex={1} onClick={() => { setText(''); handleSubmit() }}>Skip</Button>
+          <Button $baseWidth='100%' $colorIndex={3} onClick={() => { setText(''); setIsModalOpen(false) }}>Cancel</Button>
+        </ModalActions>
+      </Modal>
     </PageContainer>
   );
 };
