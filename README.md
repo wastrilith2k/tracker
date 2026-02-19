@@ -1,35 +1,35 @@
-# My React App
+# Tracker
 
-This is a React TypeScript application that integrates with Statsig to dynamically fetch configurations for names and items. The application consists of two main pages: a main page that displays buttons for each name and an item page that displays buttons for each item associated with the selected name.
-
-## Features
-
-- Dynamic fetching of names and items from Statsig configurations.
-- Navigation between the main page and item page using React Router.
-- Event tracking with Statsig when item buttons are clicked.
+A React TypeScript app for tracking events and viewing metrics. Uses Firebase for authentication, Statsig for dynamic configuration, and AWS API Gateway + DynamoDB for event storage and metrics.
 
 ## Project Structure
 
 ```
-my-react-app
-├── public
+tracker/
+├── frontend/               # React + Vite frontend
+│   ├── src/
+│   │   ├── config/         # Firebase, AWS, and Statsig configs
+│   │   ├── components/     # Shared UI components
+│   │   ├── screens/        # Page components (Main, Item, Metrics, Login)
+│   │   ├── styles/
+│   │   ├── utils/
+│   │   ├── App.tsx
+│   │   └── index.tsx
 │   ├── index.html
-│   └── favicon.ico
-├── src
-│   ├── components
-│   │   ├── ItemPage.tsx
-│   │   └── MainPage.tsx
-│   ├── config
-│   │   └── statsigConfig.ts
-│   ├── App.tsx
-│   ├── index.tsx
-│   └── styles
-│       └── App.css
-├── .eslintrc.js
-├── .prettierrc
-├── package.json
-├── tsconfig.json
-└── README.md
+│   ├── package.json
+│   ├── vite.config.js
+│   └── tsconfig.json
+├── lambdas/                # AWS Lambda reference code
+│   ├── trackerFunc.js      # Event logging and metrics queries
+│   ├── eventsHandler.js    # Event CRUD operations
+│   ├── getNamesAndEvents.js
+│   └── namesHandler.js     # Name CRUD operations
+├── scripts/
+│   └── sync-env.sh         # Push .env values to GitHub Secrets / Firebase
+├── .github/workflows/      # Firebase Hosting CI/CD
+├── firebase.json
+├── apphosting.yaml
+└── .firebaserc
 ```
 
 ## Getting Started
@@ -37,41 +37,54 @@ my-react-app
 1. Clone the repository:
    ```
    git clone <repository-url>
-   cd my-react-app
+   cd tracker
    ```
 
 2. Install dependencies:
    ```
+   cd frontend
    npm install
    ```
 
-3. Start the development server:
+3. Create `frontend/.env` with the required variables:
    ```
-   npm start
+   VITE_FIREBASE_API_KEY=
+   VITE_FIREBASE_AUTH_DOMAIN=
+   VITE_FIREBASE_PROJECT_ID=
+   VITE_FIREBASE_STORAGE_BUCKET=
+   VITE_FIREBASE_MESSAGING_SENDER_ID=
+   VITE_FIREBASE_APP_ID=
+   VITE_FIREBASE_MEASUREMENT_ID=
+   VITE_AWS_INVOKE_URL=
+   VITE_STATSIG_CLIENT_KEY=
+   VITE_STATSIG_USER_ID=
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`.
+4. Start the development server:
+   ```
+   npm run dev
+   ```
 
-## Configuration
+5. Open `http://localhost:3000`.
 
-### Statsig
+## Syncing Secrets
 
-Make sure to set up your Statsig project and configure the dynamic configurations for names and items. Update the `src/config/statsigConfig.ts` file with your Statsig API keys and configuration settings.
+The sync script pushes `frontend/.env` values to GitHub Secrets and optionally the Firebase service account:
+
+```bash
+# Push everything to GitHub Secrets
+bash scripts/sync-env.sh --github-only
+
+# Dry run to see what would be pushed
+bash scripts/sync-env.sh --dry-run
+```
+
+The service account JSON is stored separately in `frontend/service-account.json` (gitignored) and synced automatically by the script.
 
 ## Linting and Formatting
 
-This project uses ESLint for linting and Prettier for code formatting. You can run the following commands to lint and format your code:
-
-- Lint:
-  ```
-  npm run lint
-  ```
-
-- Format:
-  ```
-  npm run format
-  ```
-
-## License
-
-This project is licensed under the MIT License.
+```
+cd frontend
+npm run lint
+npm run format
+```

@@ -14,13 +14,22 @@ const dynamo = DynamoDBDocumentClient.from(client);
 
 const tableName = "tracker";
 
+const allowedOrigins = [
+  "https://tracker-566b8.firebaseapp.com",
+  "https://tracker-566b8.web.app",
+  "http://localhost:3000",
+];
+
 export const handler = async (event, context) => {
   let body;
   let statusCode = 200;
 
+  const requestOrigin = event.headers?.origin;
+  const origin = allowedOrigins.includes(requestOrigin) ? requestOrigin : allowedOrigins[0];
+
   const headers = {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "https://tracker-566b8.firebaseapp.com,https://tracker-566b8.firebaseapp.com/,http://localhost:3000,http://localhost:3000/",
+    "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Headers": "Content-Type,Event-User",
     "Access-Control-Allow-Methods": "OPTIONS,GET,PUT,DELETE",
     "Access-Control-Max-Age": "3600"
