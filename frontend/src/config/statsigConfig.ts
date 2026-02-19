@@ -1,9 +1,9 @@
 import { StatsigClient, StatsigEvent } from '@statsig/js-client';
 
-const STATSIG_CLIENT_KEY = 'client-RAG7a7fsaQyP3SJysn6CoSHLCCzWMB7UIb6tkJVQVW6';
+const STATSIG_CLIENT_KEY = import.meta.env.VITE_STATSIG_CLIENT_KEY;
 
 const Statsig = new StatsigClient(STATSIG_CLIENT_KEY, {
-  userID: '6eErEEqJsTZbDBDPK6j4vQ',
+  userID: import.meta.env.VITE_STATSIG_USER_ID,
 });
 
 Statsig.initializeAsync();
