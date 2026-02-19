@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="${SCRIPT_DIR}/../frontend/.env"
+SA_FILE="${SCRIPT_DIR}/../frontend/service-account.json"
 
 # Flags
 GITHUB_ONLY=false
@@ -12,7 +13,8 @@ DRY_RUN=false
 usage() {
   echo "Usage: $0 [--github-only] [--firebase-only] [--dry-run]"
   echo ""
-  echo "Syncs frontend/.env values to GitHub Secrets and Firebase App Hosting secrets."
+  echo "Syncs frontend/.env values and service account to GitHub Secrets"
+  echo "and Firebase App Hosting secrets."
   echo ""
   echo "Options:"
   echo "  --github-only    Only push to GitHub Secrets"
@@ -74,6 +76,24 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
   fi
 done < "$ENV_FILE"
+
+# Handle service account file separately
+if [[ -f "$SA_FILE" ]]; then
+  echo ""
+  echo "Found $SA_FILE"
+
+  if [[ "$FIREBASE_ONLY" != true ]]; then
+    if [[ "$DRY_RUN" == true ]]; then
+      echo "[dry-run] gh secret set FIREBASE_SERVICE_ACCOUNT < $SA_FILE"
+    else
+      echo "Setting GitHub secret: FIREBASE_SERVICE_ACCOUNT"
+      gh secret set FIREBASE_SERVICE_ACCOUNT < "$SA_FILE"
+    fi
+  fi
+else
+  echo ""
+  echo "Warning: $SA_FILE not found, skipping FIREBASE_SERVICE_ACCOUNT"
+fi
 
 echo ""
 echo "Done."
