@@ -1,3 +1,7 @@
 node_modules
 .firebase
 dist
+.claude
+.env
+service-account.json
+.firebase
