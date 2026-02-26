@@ -9,7 +9,6 @@ import {
   PageHeader,
 } from '../components/styles';
 import { Icon } from '../components/Icon';
-import { LogoutButton } from '../components/LogoutButton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
 import { Modal } from '../components/Modal';
