@@ -197,7 +197,7 @@ export const MetricsPage = () => {
                 <MetricsEventTable>
                   <thead>
                     <tr>
-                      <th>Event</th>
+                      <th>Name</th>
                       <th>Date</th>
                       <th>Event</th>
                       <th>Comment</th>
