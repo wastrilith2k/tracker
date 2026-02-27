@@ -49,7 +49,7 @@ export const fetchMetrics = async (name: string, user: string) => {
 };
 
 export const createName = async (name: string, user: string) => {
-  const response = await fetch(`${invokeUrl}config/name`, {
+  const response = await fetch(`${invokeUrl}config/names`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ export const createName = async (name: string, user: string) => {
 };
 
 export const fetchNames = async (user: string) => {
-  const response = await fetch(`${invokeUrl}config/name`, {
+  const response = await fetch(`${invokeUrl}config/names`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export const fetchNames = async (user: string) => {
 };
 
 export const updateNames = async (names: AwsName[], user: string) => {
-  const response = await fetch(`${invokeUrl}config/name`, {
+  const response = await fetch(`${invokeUrl}config/names`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export const updateNames = async (names: AwsName[], user: string) => {
 };
 
 export const deleteName = async (name: AwsName, user: string) => {
-  const response = await fetch(`${invokeUrl}config/name/${name.id}`, {
+  const response = await fetch(`${invokeUrl}config/names/${name.id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
