@@ -29,3 +29,5 @@ env:
     secret: VITE_STATSIG_CLIENT_KEY
   - variable: VITE_STATSIG_USER_ID
     secret: VITE_STATSIG_USER_ID
+  - variable: VITE_FARO_URL
+    value: https://faro-collector-prod-us-west-0.grafana.net/collect/da1a4c4e379247602f12bc91d3961321

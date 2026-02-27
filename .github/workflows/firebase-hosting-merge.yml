@@ -23,6 +23,7 @@ jobs:
           VITE_AWS_INVOKE_URL: ${{ secrets.VITE_AWS_INVOKE_URL }}
           VITE_STATSIG_CLIENT_KEY: ${{ secrets.VITE_STATSIG_CLIENT_KEY }}
           VITE_STATSIG_USER_ID: ${{ secrets.VITE_STATSIG_USER_ID }}
+          VITE_FARO_URL: ${{ vars.VITE_FARO_URL }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

@@ -5,7 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebaseConfig';
 import { fetchMetrics } from "../config/awsConfig";
 import { ResponsiveLine } from "@nivo/line";
-import { BackButton, ChartWrapper, MetricsEventTable, MetricsEventTableContainer, MetricsEventTableHeader, PageContainer, PageHeader, StyledRightButton } from "../components/styles";
+import { StyledLeftTopButton, ChartWrapper, MetricsEventTable, MetricsEventTableContainer, MetricsEventTableHeader, PageContainer, PageHeader, StyledRightTopButton } from "../components/styles";
 import { MetricsRange } from "../components/MetricsRange";
 import moment from "moment";
 import { ToolTip } from "../components/ToolTip";
@@ -104,12 +104,12 @@ export const MetricsPage = () => {
 
   return (
     <PageContainer>
-      <BackButton onClick={() => navigate(`/items/${name}`)}>
+      <StyledLeftTopButton onClick={() => navigate(`/items/${name}`)}>
         <Icon name="chevron_left" size={48} />
-      </BackButton>
-      <StyledRightButton onClick={() => navigate('/')}>
+      </StyledLeftTopButton>
+      <StyledRightTopButton onClick={() => navigate('/')}>
         <Icon name="home" size={48} />
-      </StyledRightButton>
+      </StyledRightTopButton>
       <PageHeader>{name} Metrics</PageHeader>
       <MetricsRange dateRangeSetter={setDays} days={days} />
       {dataSource.current.length > 0 ? (

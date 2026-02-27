@@ -8,9 +8,12 @@ import { MetricsPage } from './screens/MetricsPage';
 import LoginPage from './screens/LoginPage';
 import { createReactRouterV6Options, getWebInstrumentations, initializeFaro, ReactIntegration, ReactRouterVersion, FaroRoutes } from '@grafana/faro-react';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
+import { EditModeProvider } from './components/EditStateProvider';
+
+const faroUrl = import.meta.env.VITE_FARO_URL;
 
 initializeFaro({
-  url: 'https://faro-collector-prod-us-west-0.grafana.net/collect/da1a4c4e379247602f12bc91d3961321',
+  url: faroUrl,
   app: {
     name: 'tracker',
     version: '1.0.0',
@@ -43,20 +46,22 @@ const App: React.FC = () => {
 
 
   return (
-    <Router>
-      <FaroRoutes>
-        {user ? (
-          <Fragment>
-            <Route path="/items/:name" element={<ItemPage />} />
-            <Route path="/items/:name/metrics" element={<MetricsPage />} />
-            <Route path="/items/:name/metrics/:metric" element={<MetricsPage />} />
-            <Route path="/" element={<MainPage />} />
-          </Fragment>
-        ) : (
-          <Route path="*" element={<LoginPage />} />
-        )}
-      </FaroRoutes>
-    </Router>
+    <EditModeProvider>
+      <Router>
+        <FaroRoutes>
+          {user ? (
+            <Fragment>
+              <Route path="/items/:name" element={<ItemPage />} />
+              <Route path="/items/:name/metrics" element={<MetricsPage />} />
+              <Route path="/items/:name/metrics/:metric" element={<MetricsPage />} />
+              <Route path="/" element={<MainPage />} />
+            </Fragment>
+          ) : (
+            <Route path="*" element={<LoginPage />} />
+          )}
+        </FaroRoutes>
+      </Router>
+    </EditModeProvider>
   );
 };
 
